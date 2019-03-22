@@ -1,0 +1,11 @@
+﻿
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1>Sauvegarde terminée</h1>
+
+@* Le Html.Raw(string) permet de décoder le HTML retourné par le controleur
+   Il s'agit d'une protection contre l'injection de code source via les formulaires (failles XSS)    
+*@
+@Html.Raw(ViewData["errors"])

@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MyHome.Infrastructure;
 
 namespace MyHome.Web
 {
@@ -30,6 +32,19 @@ namespace MyHome.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+
+            #region Configuration de la base de données
+            // Récupère le nom de l'assembly courant, ie. "MyHome.Web"
+            string currentAssemblyName = typeof(Startup).Assembly.GetName().Name;
+            // Obtention de chaine de configuration à la bdd depuis le fichier appsettings.xxx.json
+            string connectionString = Configuration.GetConnectionString("MyHomeDb");
+
+            // Préparation du contexte à utiliser SQL Server
+            services.AddDbContext<MyHomeDbContext>(
+                options => options.UseSqlServer(connectionString,
+                    builder => builder.MigrationsAssembly(currentAssemblyName)));
+
+            #endregion
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

@@ -21,6 +21,7 @@ namespace MyHome.Domain
 
         /// <summary>
         /// 
+        /// 
         /// </summary>
         public bool IsRinging
         {

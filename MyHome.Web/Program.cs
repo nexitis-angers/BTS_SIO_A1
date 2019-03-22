@@ -19,6 +19,19 @@ namespace MyHome.Web
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+                .UseStartup<Startup>()
+                .ConfigureAppConfiguration(SetupConfiguration);
+
+        private static void SetupConfiguration(WebHostBuilderContext context, IConfigurationBuilder builder)
+        {
+            var env = context.HostingEnvironment;
+
+            builder.SetBasePath(env.ContentRootPath)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", 
+                                optional: false, reloadOnChange: true);
+
+            // Construction (ou chargement) de la configuration depuis le fichier json
+            var configuration = builder.Build();
+        }
     }
 }
